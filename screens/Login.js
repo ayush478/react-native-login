@@ -1,5 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,18 +11,45 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import CustomButton from "../utils/CustomButton";
+
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const setData = () => {
-    if (email.length == 0 || password.length == 0) {
-      Alert.alert("Warning!", "Please write your data.");
-    }else{
+  const [name, setname] = useState("");
+  const [age, setage] = useState("");
+  useEffect(() => {
+    getData();
+}, []);
 
+const getData = () => {
+    try {
+        AsyncStorage.getItem('UserData')
+            .then(value => {
+                if (value != null) {
+                    navigation.navigate('Home');
+                }
+            })
+    } catch (error) {
+        console.log(error);
     }
-  };
+}
+
+const setData = async () => {
+    if (name.length == 0 || age.length == 0) {
+        Alert.alert('Warning!', 'Please write your data.')
+    } else {
+        try {
+            var user = {
+                Name: name,
+                Age: age
+            }
+            await AsyncStorage.setItem('UserData', JSON.stringify(user));
+            navigation.navigate('Home');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
   return (
     <View style={styles.container}>
       {/* <Image style={styles.image} source={require("../assets/icon.png")} /> */}
@@ -30,30 +58,29 @@ export default function Login({ navigation }) {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Email."
+          placeholder="name."
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(name) => setname(name)}
         />
       </View>
 
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Password."
+          placeholder="age."
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(age) => setage(age)}
         />
       </View>
 
       <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
+        <Text style={styles.forgot_button}>Forgot age?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
-      <Button title="Go to Home" onPress={setData} />
+
+      <Button 
+      title="Login" onPress={setData} />
     </View>
   );
 }
