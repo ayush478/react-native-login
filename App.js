@@ -13,6 +13,7 @@ export default function App({navigation}) {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login"  component={Login} />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -21,7 +22,7 @@ export default function App({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#ff4",
     alignItems: "center",
     justifyContent: "center",
   },

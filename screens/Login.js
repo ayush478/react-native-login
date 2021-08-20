@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,44 +11,46 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-
+import CustomButton from "../utils/CustomButton";
 
 export default function Login({ navigation }) {
   const [name, setname] = useState("");
-  const [age, setage] = useState("");
+  const [phone, setPhone] = useState("");
   useEffect(() => {
     getData();
-}, []);
+  }, []);
 
-const getData = () => {
+  const getData = () => {
     try {
-        AsyncStorage.getItem('UserData')
-            .then(value => {
-                if (value != null) {
-                    navigation.navigate('Home');
-                }
-            })
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-const setData = async () => {
-    if (name.length == 0 || age.length == 0) {
-        Alert.alert('Warning!', 'Please write your data.')
-    } else {
-        try {
-            var user = {
-                Name: name,
-                Age: age
-            }
-            await AsyncStorage.setItem('UserData', JSON.stringify(user));
-            navigation.navigate('Home');
-        } catch (error) {
-            console.log(error);
+      AsyncStorage.getItem("UserData").then((value) => {
+        if (value != null) {
+          navigation.navigate("Home");
         }
+      });
+    } catch (error) {
+      console.log(error);
     }
-}
+  };
+
+  const setData = async () => {
+    if (name.length == 0 ) {
+      Alert.alert("Warning!", "Please write your data.");
+    } else if (phone.length <10 || phone.length >10 ) {
+      Alert.alert("Warning!", "Please enter a valid phone number");
+    }
+    else {
+      try {
+        var user = {
+          Name: name,
+          Phone: phone,
+        };
+        await AsyncStorage.setItem("UserData", JSON.stringify(user));
+        navigation.navigate("Home");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -58,7 +60,7 @@ const setData = async () => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="name."
+          placeholder="Enter Your Name"
           placeholderTextColor="#003f5c"
           onChangeText={(name) => setname(name)}
         />
@@ -67,20 +69,18 @@ const setData = async () => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="age."
+          placeholder="Phone"
           placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={(age) => setage(age)}
+        
+          onChangeText={(age) => setPhone(age)}
         />
       </View>
 
       <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot age?</Text>
+        <Text style={styles.forgot_button}>Forgot number?</Text>
       </TouchableOpacity>
 
-
-      <Button 
-      title="Login" onPress={setData} />
+      <CustomButton title="Login" onPress={setData}  color='green'/>
     </View>
   );
 }

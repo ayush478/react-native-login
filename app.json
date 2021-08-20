@@ -16,10 +16,13 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    
     "ios": {
+      "bundleIdentifier": "com.yourcompany.yourappname",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.yourcompany.yourappname",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

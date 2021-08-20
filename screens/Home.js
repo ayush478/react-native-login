@@ -4,10 +4,12 @@ import { StyleSheet, Text, View, Button,TextInput } from "react-native";
 
 import React, { useState, useEffect } from 'react';
 import GlobalStyle from "../utils/GlobalStyle";
-
-const Home = ({ navigation, route }) => {
+import Login from "./Login";
+import CustomButton from "../utils/CustomButton";
+CustomButton
+const Home = ({ navigation }) => {
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [phone, setPhone] = useState('');
 
   useEffect(() => {
       getData();
@@ -20,7 +22,7 @@ const Home = ({ navigation, route }) => {
                   if (value != null) {
                       let user = JSON.parse(value);
                       setName(user.Name);
-                      setAge(user.Age);
+                      setPhone(user.Phone);
                   }
               })
       } catch (error) {
@@ -65,7 +67,7 @@ const Home = ({ navigation, route }) => {
               GlobalStyle.CustomFont,
               styles.text
           ]}>
-              Your age is {age}
+              Your Phone No. is {phone}
           </Text>
           <TextInput
               style={styles.input}
@@ -73,15 +75,18 @@ const Home = ({ navigation, route }) => {
               value={name}
               onChangeText={(value) => setName(value)}
           />
-          <Button
+          
+          <CustomButton
               title='Update'
               color='#ff7f00'
-              onPressFunction={updateData}
+              on
+              onPress={updateData}
           />
-          <Button
+          <CustomButton
               title='Remove'
-              color='#f40100'
-              onPressFunction={removeData}
+              color='red'
+            
+              onPress={removeData}
           />
       </View>
   );
